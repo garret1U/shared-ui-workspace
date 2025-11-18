@@ -79,6 +79,44 @@ npm install @garret1u/ui
 | **Local Dev** | Instant changes | Requires republish |
 | **CI/CD Setup** | Complex | Simple |
 | **Team Size** | Small-Medium | Any |
+| **MCP Server Support** | Yes | Yes |
+
+---
+
+## Development Tools Integration
+
+Both deployment approaches support integration with development tools and MCP servers:
+
+### Serena MCP Server Integration
+
+Projects using either approach can integrate [Serena MCP Server](https://github.com/oraios/serena) for enhanced code analysis and editing capabilities:
+
+**Setup (from project directory):**
+```bash
+claude mcp add serena -- uv run --directory ~/serena serena start-mcp-server --context ide-assistant --project $(pwd)
+```
+
+**Benefits:**
+- 🔍 Semantic code search (find symbols, references, definitions)
+- ✏️ Smart code editing (insert/replace at symbol level)
+- 📁 Intelligent file operations
+- 🎯 Language server integration for full TypeScript awareness
+
+**Configuration:** Create `.serena/project.yml` in project root:
+```yaml
+name: "project-name"
+language: "typescript"
+
+tools:
+  - semantic_search
+  - code_edit
+  - file_operations
+
+system_prompt: |
+  Project-specific context and coding standards.
+```
+
+**Reference Implementation:** See [ski-resorts](https://github.com/garret1U/ski-resorts) for example configuration.
 
 ---
 
@@ -125,6 +163,10 @@ Do you have multiple repositories?
   - Repository: https://github.com/garret1U/ski-resorts
   - Deployment: Vercel
   - Uses: `@garret1u/ui@1.0.1`
+  - **MCP Integration**: Serena MCP Server for semantic code analysis
+    - Context: `ide-assistant`
+    - Tools: semantic_search, code_edit, file_operations
+    - Configuration: `.serena/project.yml`
 
 ### Monorepo (Coming Soon)
 - TBD
