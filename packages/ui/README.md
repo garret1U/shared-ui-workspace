@@ -1,8 +1,65 @@
-# @workspace/ui
+# @garret1u/ui
 
-Shared UI component library built with **shadcn/ui**, **Radix UI**, and **Tailwind CSS**.
+**Version: 2.2.0** | Shared UI component library built with **shadcn/ui**, **Radix UI**, and **Tailwind CSS v4**.
 
-> **📦 For separate repositories**: This package is published as `@garret1u/ui` on GitHub Packages.
+## Features
+
+- 🎨 **8 Beautiful Themes** - 3 neutral (Zinc, Slate, Stone) + 5 accent colors (Blue, Green, Orange, Red, Violet)
+- 🌓 **Light/Dark Mode** - Full support with system preference detection
+- 🎯 **OKLCH Color Space** - Perceptually uniform colors
+- ⚡ **Tailwind v4** - Lightning-fast Rust engine with CSS-first configuration
+- 🧩 **40+ Components** - Primitives + composites based on shadcn/ui patterns
+- 💾 **Persistent Preferences** - Theme choices saved in localStorage
+- ♿ **Accessible** - Built on Radix UI primitives with ARIA support
+
+## Quick Start
+
+```bash
+# Install the package
+pnpm add @garret1u/ui
+
+# Install peer dependencies
+pnpm add react react-dom next
+```
+
+```typescript
+// app/layout.tsx
+import '@garret1u/ui/styles'
+import { Toaster, ThemeSwitcher } from '@garret1u/ui'
+import { Providers } from './providers'
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <Providers>
+          <header>
+            <ThemeSwitcher variant="separate" align="end" />
+          </header>
+          {children}
+          <Toaster position="bottom-right" />
+        </Providers>
+      </body>
+    </html>
+  )
+}
+```
+
+```typescript
+// app/providers.tsx
+'use client'
+import { ThemeProvider } from '@garret1u/ui'
+
+export function Providers({ children }) {
+  return (
+    <ThemeProvider defaultTheme="zinc" defaultMode="system">
+      {children}
+    </ThemeProvider>
+  )
+}
+```
+
+> **📦 Publishing**: This package is published as `@garret1u/ui` on GitHub Packages.
 > See [GitHub Packages Deployment Guide](../../GITHUB_PACKAGES_DEPLOYMENT.md) for deployment instructions.
 
 ## Installation
@@ -62,25 +119,182 @@ const config: Config = {
 export default config
 ```
 
-### 3. Add Toast Provider (Optional)
+### 3. Add ThemeProvider (Required)
 
-If using toast notifications:
+Wrap your application with the `ThemeProvider`:
+
+```typescript
+// app/providers.tsx
+'use client'
+
+import { ThemeProvider } from '@workspace/ui'
+import { ReactNode } from 'react'
+
+export function Providers({ children }: { children: ReactNode }) {
+  return (
+    <ThemeProvider
+      defaultTheme="zinc"
+      defaultMode="system"
+      storageKey="my-app-theme"
+    >
+      {children}
+    </ThemeProvider>
+  )
+}
+```
 
 ```typescript
 // app/layout.tsx
+import '@workspace/ui/styles'
 import { Toaster } from '@workspace/ui'
+import { Providers } from './providers'
 
 export default function RootLayout({ children }) {
   return (
     <html>
       <body>
-        {children}
-        <Toaster position="bottom-right" />
+        <Providers>
+          {children}
+          <Toaster position="bottom-right" />
+        </Providers>
       </body>
     </html>
   )
 }
 ```
+
+## Theming System
+
+### Available Themes
+
+The library includes 8 carefully crafted themes:
+
+**Neutral Themes** (Professional, versatile):
+- **Zinc** (default) - Cool modern gray with subtle blue undertones
+- **Slate** - Professional blue-gray with excellent readability
+- **Stone** - Warm natural gray with earthy undertones
+
+**Accent Themes** (Vibrant, expressive):
+- **Blue** - Classic blue with vibrant accents
+- **Green** - Fresh, vibrant green
+- **Orange** - Energetic, warm orange
+- **Red** - Bold, assertive red
+- **Violet** - Elegant, royal violet
+
+Each theme includes:
+- ✅ Full light and dark mode variants
+- ✅ Perceptually uniform OKLCH colors
+- ✅ Complete semantic color palette
+- ✅ Optimized shadows for each mode
+- ✅ Focus states and accessibility
+
+### Theme Switcher Component
+
+Add the `ThemeSwitcher` to your UI to let users change themes:
+
+```typescript
+import { ThemeSwitcher } from '@workspace/ui'
+
+export function Header() {
+  return (
+    <header>
+      <h1>My App</h1>
+
+      {/* Separate dropdowns for theme and mode */}
+      <ThemeSwitcher variant="separate" align="end" />
+
+      {/* Or combined in one dropdown */}
+      <ThemeSwitcher variant="combined" align="end" />
+    </header>
+  )
+}
+```
+
+**Variants:**
+- `separate` - Two icon buttons (color palette + sun/moon/monitor)
+- `combined` - Single palette button with all options
+
+### Programmatic Theme Control
+
+Use the `useTheme` hook to control themes programmatically:
+
+```typescript
+'use client'
+
+import { useTheme } from '@workspace/ui'
+
+export function ThemeControls() {
+  const { theme, mode, setTheme, setMode } = useTheme()
+
+  return (
+    <div>
+      <p>Current theme: {theme}</p>
+      <p>Current mode: {mode}</p>
+
+      <button onClick={() => setTheme('blue')}>
+        Switch to Blue Theme
+      </button>
+
+      <button onClick={() => setMode('dark')}>
+        Enable Dark Mode
+      </button>
+    </div>
+  )
+}
+```
+
+**Available values:**
+- `theme`: `'zinc' | 'slate' | 'stone' | 'blue' | 'green' | 'orange' | 'red' | 'violet'`
+- `mode`: `'light' | 'dark' | 'system'`
+
+### ThemeProvider Props
+
+```typescript
+interface ThemeProviderProps {
+  children: ReactNode
+  defaultTheme?: Theme // Default: 'zinc'
+  defaultMode?: Mode   // Default: 'system'
+  storageKey?: string  // Default: 'ui-theme'
+}
+```
+
+The provider automatically:
+- Loads saved preferences from `localStorage`
+- Applies the theme via `data-theme` attribute
+- Applies light/dark mode via class
+- Detects system preference changes
+- Persists user selections
+
+### Design Tokens
+
+All themes provide comprehensive design tokens:
+
+**Colors:**
+- `--color-background`, `--color-foreground`
+- `--color-primary`, `--color-primary-foreground`
+- `--color-secondary`, `--color-secondary-foreground`
+- `--color-accent`, `--color-accent-foreground`
+- `--color-muted`, `--color-muted-foreground`
+- `--color-destructive`, `--color-success`, `--color-warning`, `--color-info`
+- `--color-border`, `--color-input`, `--color-ring`
+
+**Typography:**
+- Font weights (300-700)
+- Letter spacing (tighter to wider)
+- Line heights (tight to loose)
+
+**Motion:**
+- Easing functions (spring, bounce)
+- Duration tokens (instant to slower)
+
+**Layout:**
+- Z-index scale (dropdown to tooltip)
+- Container widths (sm to 2xl)
+- Border radius tokens
+
+**Shadows:**
+- 6-tier depth system (xs to 2xl)
+- Optimized for light/dark modes
 
 ## Usage
 
@@ -329,11 +543,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@workspace/ui'
 20. **Popover** - Popover component
 21. **Toast** - Toast notifications (Sonner)
 
-### Composite Components (3)
+### Composite Components (4)
 
 1. **LoadingCard** - Card with loading spinner
 2. **ErrorCard** - Card with error state and retry
 3. **DataTable** - Full-featured data table with TanStack React Table
+4. **ThemeSwitcher** - Theme and mode selector UI
 
 ### Utilities
 
@@ -363,28 +578,63 @@ Components use Tailwind CSS with CSS variables for theming. Customize colors by 
 }
 ```
 
-## Dark Mode
+## Migration Guide
 
-All components support dark mode automatically via Tailwind's dark mode strategy. Use `next-themes` for theme switching:
+### From v2.0.0 to v2.2.0
 
+If you're upgrading from v2.0.0 (basic Tailwind v4), follow these steps:
+
+1. **Update the package:**
 ```bash
-npm install next-themes
+pnpm add @garret1u/ui@2.2.0
 ```
 
+2. **Replace globals.css import with themes.css:**
+```typescript
+// Before (app/layout.tsx)
+import './globals.css'
+
+// After
+import '@garret1u/ui/styles'
+```
+
+3. **Add ThemeProvider:**
 ```typescript
 // app/providers.tsx
 'use client'
 
-import { ThemeProvider } from 'next-themes'
+import { ThemeProvider } from '@garret1u/ui'
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider defaultTheme="zinc" defaultMode="system">
       {children}
     </ThemeProvider>
   )
 }
 ```
+
+4. **Optional: Add ThemeSwitcher to your UI:**
+```typescript
+import { ThemeSwitcher } from '@garret1u/ui'
+
+export function Header() {
+  return (
+    <header>
+      <ThemeSwitcher variant="separate" align="end" />
+    </header>
+  )
+}
+```
+
+### Benefits of the New Theme System
+
+- **Better Color Science**: OKLCH provides perceptually uniform colors
+- **More Options**: 8 themes instead of 1 default
+- **User Choice**: Let users pick their preferred theme
+- **Persistent**: Preferences saved in localStorage
+- **System Integration**: Respects system dark mode preference
+- **Enhanced Tokens**: More comprehensive design token system
 
 ## Contributing
 
@@ -392,6 +642,29 @@ export function Providers({ children }: { children: React.ReactNode }) {
 2. Export from `src/primitives/index.ts` or `src/composite/index.ts`
 3. Run `npm run type-check` to verify types
 4. Update documentation
+
+## Changelog
+
+### v2.2.0 (2025-11-19)
+- ✨ Added 5 accent themes (Blue, Green, Orange, Red, Violet)
+- 📝 Complete 8-theme palette with light/dark variants
+- 🎨 All themes use OKLCH color space
+- 📚 Enhanced documentation with migration guide
+
+### v2.1.0 (2025-11-19)
+- ✨ Added multi-theme system with ThemeProvider
+- ✨ Added ThemeSwitcher UI component
+- 🎨 Initial 3 neutral themes (Zinc, Slate, Stone)
+- 🎯 Enhanced design tokens (typography, motion, layout, shadows)
+- 💾 localStorage persistence for theme preferences
+- 🌓 System preference detection for dark mode
+- 📝 Comprehensive theme documentation
+
+### v2.0.0 (2025-11-18)
+- ⚡ Migrated to Tailwind CSS v4
+- 🚀 Rust-based engine for faster builds
+- 🎨 CSS-first configuration with @theme directive
+- 📦 Updated all dependencies
 
 ## License
 

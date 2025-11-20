@@ -1,6 +1,6 @@
 {
   "name": "@garret1u/ui",
-  "version": "2.3.1",
+  "version": "2.3.3",
   "description": "Shared UI component library - Tailwind v4 with multi-theme support",
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.4",
     "@radix-ui/react-avatar": "^1.1.5",

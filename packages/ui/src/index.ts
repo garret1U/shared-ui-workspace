@@ -1,6 +1,12 @@
 // Utilities
 export * from './lib/utils'
 
+// Hooks
+export * from './hooks/use-mobile'
+
+// Providers
+export * from './providers/theme-provider'
+
 // Primitive components (shadcn/ui)
 export * from './primitives'
 
@@ -8,4 +14,4 @@ export * from './primitives'
 export * from './composite'
 
 // Styles (import in your app's layout.tsx or _app.tsx)
-// import '@workspace/ui/styles'
+// import '@garret1u/ui/styles'
