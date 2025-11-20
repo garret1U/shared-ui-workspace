@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../lib/utils"
 
 const spinnerVariants = cva(
-  "inline-block animate-spin rounded-full border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]",
+  "inline-block animate-spin rounded-full border-solid border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]",
   {
     variants: {
       size: {
@@ -14,12 +14,12 @@ const spinnerVariants = cva(
         xl: "h-12 w-12 border-4",
       },
       variant: {
-        default: "text-primary",
-        secondary: "text-secondary",
-        destructive: "text-destructive",
-        success: "text-success",
-        warning: "text-warning",
-        info: "text-info",
+        default: "border-primary",
+        secondary: "border-secondary",
+        destructive: "border-destructive",
+        success: "border-success",
+        warning: "border-warning",
+        info: "border-info",
       },
     },
     defaultVariants: {
