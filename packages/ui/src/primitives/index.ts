@@ -13,6 +13,8 @@ export * from "./multi-select";
 export * from "./calendar";
 export * from "./radio-group";
 export * from "./slider";
+export * from "./form";
+export * from "./input-otp";
 
 // Layout Components
 export * from "./card";
@@ -23,6 +25,8 @@ export * from "./collapsible";
 export * from "./sidebar";
 export * from "./breadcrumb";
 export * from "./navigation-menu";
+export * from "./scroll-area";
+export * from "./resizable";
 
 // Overlay Components
 export * from "./dialog";
@@ -33,6 +37,8 @@ export * from "./popover";
 export * from "./tooltip";
 export * from "./hover-card";
 export * from "./context-menu";
+export * from "./drawer";
+export * from "./menubar";
 
 // Feedback Components
 export * from "./alert";
@@ -46,6 +52,8 @@ export * from "./toast";
 export * from "./avatar";
 export * from "./table";
 export * from "./command";
+export * from "./carousel";
+export * from "./aspect-ratio";
 
 // Misc Components
 export * from "./toggle";
